@@ -10,17 +10,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import uz.demo.app.demo.security.AuthoritiesConstants;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -59,7 +56,7 @@ public class TokenProvider {
         return Jwts
             .builder()
             .setSubject(authentication.getName())
-//            .claim(AUTHORITIES_KEY, authorities)
+            .claim(AUTHORITIES_KEY, authorities)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)
             .compact();
@@ -68,14 +65,10 @@ public class TokenProvider {
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token).getBody();
 
-//        Collection<? extends GrantedAuthority> authorities = Arrays
-//            .stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-//            .map(SimpleGrantedAuthority::new)
-//            .collect(Collectors.toList());
-
         User principal = new User(claims.getSubject(), "", new ArrayList<>());
-
-        return new UsernamePasswordAuthenticationToken(principal, token, new ArrayList<>());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add((GrantedAuthority) () -> AuthoritiesConstants.ADMIN);
+        return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
 
     public boolean validateToken(String authToken) {
