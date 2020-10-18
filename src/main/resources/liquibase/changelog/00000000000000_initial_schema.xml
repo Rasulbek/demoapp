@@ -47,7 +47,6 @@
             <column name="birthday" type="date"/>
             <column name="created_date" type="timestamp"/>
         </loadData>
-        <dropDefaultValue tableName="main_user" columnName="created_date" columnDataType="datetime"/>
 
     </changeSet>
 

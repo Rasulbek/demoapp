@@ -30,6 +30,10 @@ public class User {
 
     private String address;
 
+    private String createdBy = "system"; // will be modified according to current user
+
+    private String lastModifiedBy = "system";
+
     public User() {
     }
 
@@ -107,6 +111,22 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     @Override
