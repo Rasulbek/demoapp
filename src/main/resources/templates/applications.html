@@ -15,11 +15,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
+                <li class="nav-item">
                     <a class="nav-link" href="/">Главная</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/application/all">Заявки <span class="sr-only">(current)</span></a>
+                <li class="nav-item active">
+                    <a class="nav-link" href="/application/all">Заявки</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/user/all">Пользователи</a>
@@ -39,11 +39,30 @@
         </div>
     </nav>
 
-    <div class="col-12">
-        <div class="text-right">
-            <a href="/application/create" class="btn btn-primary">Create</a>
+    <div class="col-12" id="statusDiv" th:if="${applicationStatus != null}">
+        <div th:if="${applicationStatus != 'success' and applicationStatus != 'updated'}"
+             class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Что то не так!</strong> Произошла ошибка. Код ошибки: <span th:text="${applicationStatus}"></span>.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div th:if="${applicationStatus == 'success' or applicationStatus == 'updated'}"
+             class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Успешно!</strong> Заявка успешно принято или изменено.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
         </div>
     </div>
+
+    <div class="col-12">
+        <div class="text-right">
+            <a href="/application/new" class="btn btn-primary">Добавить</a>
+        </div>
+    </div>
+    <br/>
 
     <div class="col-12">
 
@@ -58,11 +77,11 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="application : ${applications}">
-                <td th:text="${application.id}"></td>
-                <td th:text="${application.title}"></td>
-                <td th:text="${application.author}"></td>
-                <td th:text="${application.createdDate}"></td>
+            <tr th:each="item : ${applications}">
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.title}"></td>
+                <td th:text="${item.authorName}"></td>
+                <td th:text="${item.createdDate}"></td>
             </tr>
             </tbody>
         </table>
