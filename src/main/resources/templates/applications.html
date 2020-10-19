@@ -39,7 +39,7 @@
         </div>
     </nav>
 
-    <div class="col-12" id="statusDiv" th:if="${applicationStatus != null}">
+    <div class="col-12" id="statusDiv" th:if="${applicationStatus != null and applicationStatus != '' and applicationStatus != ' '}">
         <div th:if="${applicationStatus != 'success' and applicationStatus != 'updated'}"
              class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Что то не так!</strong> Произошла ошибка. Код ошибки: <span th:text="${applicationStatus}"></span>.

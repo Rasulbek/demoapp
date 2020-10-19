@@ -129,6 +129,16 @@ public class User {
         this.lastModifiedBy = lastModifiedBy;
     }
 
+    public String getDisplayName() {
+        String displayName = String.format("%s %s",
+                this.firstName != null ? this.firstName : "",
+                this.lastName != null ? this.lastName : "");
+        if (displayName.length() > 1) {
+            return displayName;
+        }
+        return this.username;
+    }
+
     @Override
     public String toString() {
         return "User{" +

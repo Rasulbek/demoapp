@@ -28,8 +28,7 @@ public class ApplicationDTO {
         this.title = application.getTitle();
         this.description = application.getDescription();
         this.createdDate = application.getCreatedDate();
-        String authorName = application.getAuthor().getFirstName() + " " + application.getAuthor().getLastName();
-        this.authorName = authorName.length() > 1 ? authorName : application.getAuthor().getUsername();
+        this.authorName = application.getAuthor().getDisplayName();
     }
 
     public Long getId() {
