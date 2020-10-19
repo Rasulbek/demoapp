@@ -1,6 +1,7 @@
 package uz.demo.app.demo.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,8 +19,9 @@ public class ApplicationController {
     }
 
     @GetMapping(path="/all")
-    public @ResponseBody Iterable<ApplicationDTO> fetchApplications() {
-        return applicationService.getAllApplications();
+    public String fetchApplications(Model model) {
+        model.addAttribute("applications", applicationService.getAllApplications());
+        return "applications";
     }
 
 }
