@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="autoIncrement" value="true" dbms="postgresql"/>
+
+    <changeSet id="20201020215500" author="rasulbek">
+        <createTable tableName="main_comment">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="comment" type="clob">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="application_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="timestamp" defaultValueDate="${now}">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="20201020215500-1" author="rasulbek">
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="main_comment"
+                                 constraintName="fk_comment_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="main_user"/>
+    </changeSet>
+
+    <changeSet id="20201020215500-2" author="rasulbek">
+        <addForeignKeyConstraint baseColumnNames="application_id"
+                                 baseTableName="main_comment"
+                                 constraintName="fk_comment_application_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="main_application"/>
+    </changeSet>
+
+</databaseChangeLog>
