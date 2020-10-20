@@ -1,6 +1,7 @@
 package uz.demo.app.demo.service;
 
 import org.springframework.stereotype.Service;
+import uz.demo.app.demo.Constants;
 import uz.demo.app.demo.model.Application;
 import uz.demo.app.demo.model.User;
 import uz.demo.app.demo.service.dto.ApplicationDTO;
@@ -26,6 +27,7 @@ public class ApplicationService {
     public List<ApplicationDTO> getAllApplications() {
         return applicationRepository.findAll().stream()
                 .sorted((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate()))
+                .filter(Application::notDeleted)
                 .map(ApplicationDTO::new)
                 .collect(Collectors.toList());
     }
@@ -55,6 +57,7 @@ public class ApplicationService {
         application.setTitle(title);
         application.setDescription(description);
         application.setCreatedDate(ZonedDateTime.now());
+        application.setStatus(Constants.APPLICATION_PUBLISHED);
         application = applicationRepository.save(application);
         if (application.getId() != null) {
             return "success";

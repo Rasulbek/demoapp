@@ -1,5 +1,7 @@
 package uz.demo.app.demo.model;
 
+import uz.demo.app.demo.Constants;
+
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 
@@ -26,6 +28,9 @@ public class Application {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User author;
+
+    @Column(name = "status")
+    private String status;
 
     public Application() {
     }
@@ -78,6 +83,14 @@ public class Application {
         this.author = author;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "Application{" +
@@ -86,5 +99,9 @@ public class Application {
                 ", author=" + author.getUsername() +
                 ", createdDate=" + createdDate +
                 '}';
+    }
+
+    public boolean notDeleted() {
+        return !Constants.DELETED.equals(getStatus());
     }
 }
