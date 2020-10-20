@@ -3,7 +3,7 @@ package uz.demo.app.demo.service.dto;
 import uz.demo.app.demo.model.Application;
 
 import javax.validation.constraints.NotNull;
-import java.time.ZonedDateTime;
+import java.util.Date;
 
 public class ApplicationDTO {
     private Long id;
@@ -15,7 +15,7 @@ public class ApplicationDTO {
     private String description;
 
     @NotNull
-    private ZonedDateTime createdDate;
+    private Date createdDate;
 
     private String authorName;
 
@@ -27,7 +27,7 @@ public class ApplicationDTO {
         this.id = application.getId();
         this.title = application.getTitle();
         this.description = application.getDescription();
-        this.createdDate = application.getCreatedDate();
+        this.createdDate = Date.from(application.getCreatedDate().toInstant());
         this.authorName = application.getAuthor().getDisplayName();
     }
 
@@ -55,11 +55,11 @@ public class ApplicationDTO {
         this.description = description;
     }
 
-    public ZonedDateTime getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(ZonedDateTime createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 

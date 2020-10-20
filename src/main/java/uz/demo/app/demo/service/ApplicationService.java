@@ -25,6 +25,7 @@ public class ApplicationService {
 
     public List<ApplicationDTO> getAllApplications() {
         return applicationRepository.findAll().stream()
+                .sorted((o1, o2) -> o2.getCreatedDate().compareTo(o1.getCreatedDate()))
                 .map(ApplicationDTO::new)
                 .collect(Collectors.toList());
     }

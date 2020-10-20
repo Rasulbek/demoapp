@@ -71,17 +71,19 @@
             <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Author</th>
-                <th scope="col">Date & Time</th>
+                <th scope="col" style="width: 40%">Заголовок</th>
+                <th scope="col" style="width: 30%">Автор</th>
+                <th scope="col" style="width: 25%">Время создания</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="item : ${applications}">
                 <td th:text="${item.id}"></td>
-                <td th:text="${item.title}"></td>
+                <td>
+                    <a th:href="${'/application/' + item.id}" th:text="${item.title}"></a>
+                </td>
                 <td th:text="${item.authorName}"></td>
-                <td th:text="${item.createdDate}"></td>
+                <td th:text="${#dates.format(item.createdDate, 'dd.MM.yyyy HH:mm')}"></td>
             </tr>
             </tbody>
         </table>
