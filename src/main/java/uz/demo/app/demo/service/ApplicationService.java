@@ -32,8 +32,15 @@ public class ApplicationService {
                 .collect(Collectors.toList());
     }
 
+    public ApplicationDTO getApplicationDTOById(Long id) {
+        return applicationRepository.findById(id)
+                .filter(Application::notDeleted)
+                .map(ApplicationDTO::new)
+                .orElseThrow(IllegalAccessError::new);
+    }
+
     public String createOrUpdate(Long id, String title, String description) {
-        Long userId = userService.getIdByUsername();
+        Long userId = userService.getCurrentUserId();
         if (userId == -1L) {
             return "not.authorized";
         }

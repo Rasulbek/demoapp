@@ -29,7 +29,7 @@ public class UserService {
         return userRepository.save(user).getId();
     }
 
-    public Long getIdByUsername() {
+    public Long getCurrentUserId() {
         return SecurityUtils.getCurrentUserLogin()
                 .map(username -> userRepository.findByUsername(username)
                         .map(User::getId)

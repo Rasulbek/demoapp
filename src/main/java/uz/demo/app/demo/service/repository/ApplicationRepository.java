@@ -6,7 +6,7 @@ import uz.demo.app.demo.model.Application;
 import java.util.List;
 import java.util.Optional;
 
-public interface ApplicationRepository extends JpaRepository<Application, Integer> {
+public interface ApplicationRepository extends JpaRepository<Application, Long> {
 
     Optional<Application> findFirstByIdAndAuthorId(Long id, Long authorId);
 
