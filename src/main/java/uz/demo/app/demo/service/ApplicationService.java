@@ -7,6 +7,7 @@ import uz.demo.app.demo.model.User;
 import uz.demo.app.demo.service.dto.ApplicationDTO;
 import uz.demo.app.demo.service.repository.ApplicationRepository;
 
+import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -70,5 +71,13 @@ public class ApplicationService {
             return "success";
         }
         return "error";
+    }
+
+    @Transactional
+    public void deleteById(Long id) {
+        ApplicationDTO applicationDTO = getApplicationDTOById(id);
+        if (userService.getCurrentUserId().equals(applicationDTO.getAuthorId())) {
+            applicationRepository.findById(id).ifPresent(application -> application.setStatus(Constants.DELETED));
+        }
     }
 }

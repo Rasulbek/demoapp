@@ -17,6 +17,8 @@ public class ApplicationDTO {
     @NotNull
     private Date createdDate;
 
+    private Long authorId;
+
     private String authorName;
 
     public ApplicationDTO() {
@@ -28,6 +30,7 @@ public class ApplicationDTO {
         this.title = application.getTitle();
         this.description = application.getDescription();
         this.createdDate = Date.from(application.getCreatedDate().toInstant());
+        this.authorId = application.getAuthor().getId();
         this.authorName = application.getAuthor().getDisplayName();
     }
 
@@ -61,6 +64,14 @@ public class ApplicationDTO {
 
     public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
     }
 
     public String getAuthorName() {

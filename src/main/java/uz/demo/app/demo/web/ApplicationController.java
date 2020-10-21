@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import uz.demo.app.demo.service.ApplicationService;
 import uz.demo.app.demo.service.CommentService;
+import uz.demo.app.demo.service.UserService;
 import uz.demo.app.demo.service.dto.ApplicationDTO;
 import uz.demo.app.demo.service.dto.CommentDTO;
 
@@ -19,9 +20,12 @@ public class ApplicationController {
 
     private final CommentService commentService;
 
-    public ApplicationController(ApplicationService applicationService, CommentService commentService) {
+    private final UserService userService;
+
+    public ApplicationController(ApplicationService applicationService, CommentService commentService, UserService userService) {
         this.applicationService = applicationService;
         this.commentService = commentService;
+        this.userService = userService;
     }
 
     @GetMapping(path="/all")
@@ -35,7 +39,7 @@ public class ApplicationController {
 
     @GetMapping(path="/new")
     public String newApplication(Model model) {
-        model.addAttribute("application", new ApplicationDTO());
+        model.addAttribute("zayavka", new ApplicationDTO());
         return "application.form";
     }
 
@@ -45,7 +49,22 @@ public class ApplicationController {
         List<CommentDTO> commentDTOList = commentService.getAllCommentsOfApplication(id);
         model.addAttribute("zayavka", applicationDTO);
         model.addAttribute("comments", commentDTOList);
+        if (userService.getCurrentUserId().equals(applicationDTO.getAuthorId())) {
+            model.addAttribute("owner", true);
+        }
         return "application.detail";
+    }
+
+    @GetMapping(path="/{id}/edit")
+    public String newApplication(@PathVariable(name = "id") Long id, Model model) {
+        model.addAttribute("zayavka", applicationService.getApplicationDTOById(id));
+        return "application.form";
+    }
+
+    @GetMapping(path="/{id}/delete")
+    public ModelAndView newApplication(@PathVariable(name = "id") Long id) {
+        applicationService.deleteById(id);
+        return new ModelAndView("redirect:/application/all");
     }
 
     @PostMapping(path = "/create")

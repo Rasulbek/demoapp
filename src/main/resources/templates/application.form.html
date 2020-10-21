@@ -43,23 +43,23 @@
     <div class="col-12">
 
         <div class="col-md-8 order-md-1">
-            <h4 th:if="${application.id == null}" class="mb-3">Заполните заявку</h4>
-            <h4 th:if="${application.id != null}" class="mb-3">Изменить заявку</h4>
+            <h4 th:if="${zayavka.id == null}" class="mb-3">Заполните заявку</h4>
+            <h4 th:if="${zayavka.id != null}" class="mb-3">Изменить заявку</h4>
             <form th:action="@{/application/create}" method="post">
                 <div class="mb-3">
                     <label for="title">Заголовок</label>
-                    <input id="title" class="form-control" name="title" th:value="${application.title}">
+                    <input id="title" class="form-control" name="title" th:value="${zayavka.title}">
                 </div>
 
                 <div class="mb-3">
                     <label for="description">Address</label>
-                    <textarea class="form-control" id="description" name="description" rows="10" th:text="${application.description}">
+                    <textarea class="form-control" id="description" name="description" rows="10" th:text="${zayavka.description}">
                     </textarea>
                 </div>
 
                 <hr class="mb-4">
-                <button th:if="${application.id == null}"  class="btn btn-primary btn-lg btn-block" type="submit">Добавить</button>
-                <button th:if="${application.id != null}" class="btn btn-primary btn-lg btn-block" type="submit">Изменить</button>
+                <button th:if="${zayavka.id == null}"  class="btn btn-primary btn-lg btn-block" type="submit">Добавить</button>
+                <button th:if="${zayavka.id != null}" class="btn btn-primary btn-lg btn-block" type="submit">Изменить</button>
             </form>
         </div>
 
