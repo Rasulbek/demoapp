@@ -46,6 +46,7 @@
             <h4 th:if="${zayavka.id == null}" class="mb-3">Заполните заявку</h4>
             <h4 th:if="${zayavka.id != null}" class="mb-3">Изменить заявку</h4>
             <form th:action="@{/application/create}" method="post">
+                <input type="hidden" th:value="${zayavka.id}" name="id">
                 <div class="mb-3">
                     <label for="title">Заголовок</label>
                     <input id="title" class="form-control" name="title" th:value="${zayavka.title}">

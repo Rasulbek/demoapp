@@ -40,6 +40,7 @@ public class ApplicationService {
                 .orElseThrow(IllegalAccessError::new);
     }
 
+    @Transactional
     public String createOrUpdate(Long id, String title, String description) {
         Long userId = userService.getCurrentUserId();
         if (userId == -1L) {
