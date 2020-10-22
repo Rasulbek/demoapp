@@ -1,5 +1,6 @@
 package uz.demo.app.demo.service.dto;
 
+import uz.demo.app.demo.model.User;
 import java.util.Date;
 
 public class UserDTO {
@@ -18,6 +19,10 @@ public class UserDTO {
 
     private String address;
 
+    private String displayName;
+
+    private Date createdDate;
+
     public UserDTO() {
     }
 
@@ -29,6 +34,17 @@ public class UserDTO {
         this.lastName = lastName;
         this.birthday = birthday;
         this.address = address;
+    }
+
+    public UserDTO(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.birthday = user.getBirthday();
+        this.address = user.getAddress();
+        this.displayName = user.getDisplayName();
+        this.createdDate = Date.from(user.getCreatedDate().toInstant());
     }
 
     public Long getId() {
@@ -85,5 +101,21 @@ public class UserDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }

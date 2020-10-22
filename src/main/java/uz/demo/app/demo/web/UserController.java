@@ -2,8 +2,8 @@ package uz.demo.app.demo.web;
 
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import uz.demo.app.demo.model.User;
 import uz.demo.app.demo.security.AuthoritiesConstants;
 import uz.demo.app.demo.service.UserService;
 import uz.demo.app.demo.service.dto.UserDTO;
@@ -19,9 +19,9 @@ public class UserController {
     }
 
     @GetMapping(path="/all")
-    public @ResponseBody
-    Iterable<User> getAllUsers() {
-        return userService.getAllUsers();
+    public String getAllUsers(Model model) {
+        model.addAttribute("users", userService.getAllUsers());
+        return "users";
     }
 
     @Secured({AuthoritiesConstants.ADMIN})

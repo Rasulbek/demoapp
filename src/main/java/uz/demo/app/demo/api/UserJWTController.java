@@ -1,4 +1,4 @@
-package uz.demo.app.demo.web;
+package uz.demo.app.demo.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.http.HttpHeaders;
@@ -18,9 +18,6 @@ import uz.demo.app.demo.service.vm.LoginVM;
 
 import javax.validation.Valid;
 
-/**
- * Controller to authenticate users.
- */
 @RestController
 @RequestMapping("/api")
 public class UserJWTController {
@@ -50,7 +47,6 @@ public class UserJWTController {
         return new ResponseEntity<>(new JWTToken(jwt), httpHeaders, HttpStatus.OK);
     }
 
-    /** Object to return as body in JWT Authentication */
     static class JWTToken {
         private String idToken;
 

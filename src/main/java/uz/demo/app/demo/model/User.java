@@ -3,6 +3,7 @@ package uz.demo.app.demo.model;
 import uz.demo.app.demo.service.dto.UserDTO;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Entity
@@ -29,6 +30,8 @@ public class User {
     private Date birthday;
 
     private String address;
+
+    private ZonedDateTime createdDate;
 
     private String createdBy = "system"; // will be modified according to current user
 
@@ -111,6 +114,14 @@ public class User {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     public String getCreatedBy() {

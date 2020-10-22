@@ -7,6 +7,9 @@ import uz.demo.app.demo.security.SecurityUtils;
 import uz.demo.app.demo.service.dto.UserDTO;
 import uz.demo.app.demo.service.repository.UserRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService {
 
@@ -19,8 +22,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream().map(UserDTO::new).collect(Collectors.toList());
     }
 
     public Long save(UserDTO userDTO) {
