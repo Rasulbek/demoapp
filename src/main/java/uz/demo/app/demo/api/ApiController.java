@@ -11,6 +11,7 @@ import uz.demo.app.demo.service.UserService;
 import uz.demo.app.demo.service.dto.ApplicationDTO;
 import uz.demo.app.demo.service.dto.UserDTO;
 import uz.demo.app.demo.service.vm.ApplicationVM;
+import uz.demo.app.demo.service.vm.CommentVM;
 import uz.demo.app.demo.service.vm.UserVM;
 
 import javax.validation.Valid;
@@ -105,6 +106,12 @@ public class ApiController {
         } catch (IllegalAccessException e) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
         }
+    }
+
+    @PostMapping(path = "/comment", name = "Оставить комментарий к заявке")
+    public ResponseEntity<?> addComment(@Valid @RequestBody CommentVM commentVM) {
+        commentService.addCommentToApplication(commentVM.getApplicationId(), commentVM.getComment());
+        return ResponseEntity.ok(Collections.singletonMap("status", "success"));
     }
 
 }
