@@ -63,8 +63,13 @@ public class ApplicationController {
 
     @GetMapping(path="/{id}/delete")
     public ModelAndView newApplication(@PathVariable(name = "id") Long id) {
-        applicationService.deleteById(id);
-        return new ModelAndView("redirect:/application/all");
+        try {
+            applicationService.deleteById(id);
+            return new ModelAndView("redirect:/application/all");
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return new ModelAndView("redirect:/application/" + id);
+        }
     }
 
     @PostMapping(path = "/create")

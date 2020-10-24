@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import uz.demo.app.demo.service.ApplicationService;
 import uz.demo.app.demo.service.CommentService;
 import uz.demo.app.demo.service.UserService;
+import uz.demo.app.demo.service.dto.ApplicationDTO;
 import uz.demo.app.demo.service.dto.UserDTO;
+import uz.demo.app.demo.service.vm.ApplicationVM;
 import uz.demo.app.demo.service.vm.UserVM;
 
 import javax.validation.Valid;
@@ -33,14 +35,16 @@ public class ApiController {
         this.commentService = commentService;
     }
 
-    @GetMapping(path = "/users")
+    //APIs for users
+
+    @GetMapping(path = "/users", name = "Получения списки пользователей")
     public @ResponseBody
     List<UserDTO> getAllUsers() {
         return userService.getAllUsers();
     }
 
-    @GetMapping(path = "/users/{id}")
-    public ResponseEntity<?> getAllUsers(@PathVariable Long id) {
+    @GetMapping(path = "/users/{id}", name = "Получения данных о пользователя по ИД номеру")
+    public ResponseEntity<?> getUserById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(userService.getById(id));
         } catch (Exception e) {
@@ -48,7 +52,7 @@ public class ApiController {
         }
     }
 
-    @PostMapping("/users/register")
+    @PostMapping(path = "/users/register", name = "Регистрация нового пользователя")
     public ResponseEntity<?> registerUser(@Valid @RequestBody UserVM newUser) {
         try {
             Long userId = userService.registerAndGetToken(newUser);
@@ -58,11 +62,47 @@ public class ApiController {
         }
     }
 
-    @PutMapping("/users/update")
+    @PutMapping(path = "/users/update", name = "Изменения данных пользователя")
     public ResponseEntity<?> updateUser(@Valid @RequestBody UserVM userVM) {
         try {
             return ResponseEntity.ok(userService.update(userVM));
         } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+    //APIs for Applications
+
+    @GetMapping(path = "/applications", name = "Получения списки заявок")
+    public @ResponseBody
+    List<ApplicationDTO> getApplications() {
+        return applicationService.getAllApplications();
+    }
+
+    @GetMapping(path = "/applications/{id}", name = "Получения заявки по ИД номеру")
+    public ResponseEntity<?> getApplicationById(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(applicationService.getApplicationWithComments(id));
+        } catch (IllegalAccessError e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", String.format("Application by ID: %d not found", id)));
+        }
+    }
+
+    @PostMapping(path = "/applications", name = "Создания или изменения заявки")
+    public ResponseEntity<?> createApplication(@Valid @RequestBody ApplicationVM applicationVM) {
+        String status = applicationService.createOrUpdate(applicationVM.getId(), applicationVM.getTitle(), applicationVM.getDescription());
+        if ("success".equals(status) || "updated".equals(status)) {
+            return ResponseEntity.ok(Collections.singletonMap("status", status));
+        } else {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", status));
+        }
+    }
+
+    @DeleteMapping(path = "/application/{id}/delete", name = "Удаления заявки по ИД")
+    public ResponseEntity<?> deleteApplication(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(applicationService.deleteById(id));
+        } catch (IllegalAccessException e) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
         }
     }

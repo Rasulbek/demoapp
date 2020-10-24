@@ -1,15 +1,20 @@
 package uz.demo.app.demo.service;
 
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import uz.demo.app.demo.Constants;
 import uz.demo.app.demo.model.Application;
 import uz.demo.app.demo.model.User;
+import uz.demo.app.demo.security.SecurityUtils;
 import uz.demo.app.demo.service.dto.ApplicationDTO;
+import uz.demo.app.demo.service.dto.CommentDTO;
 import uz.demo.app.demo.service.repository.ApplicationRepository;
 
 import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,9 +25,12 @@ public class ApplicationService {
 
     private final UserService userService;
 
-    public ApplicationService(ApplicationRepository applicationRepository, UserService userService) {
+    private final CommentService commentService;
+
+    public ApplicationService(ApplicationRepository applicationRepository, UserService userService, CommentService commentService) {
         this.applicationRepository = applicationRepository;
         this.userService = userService;
+        this.commentService = commentService;
     }
 
     public List<ApplicationDTO> getAllApplications() {
@@ -38,6 +46,17 @@ public class ApplicationService {
                 .filter(Application::notDeleted)
                 .map(ApplicationDTO::new)
                 .orElseThrow(IllegalAccessError::new);
+    }
+
+    public ApplicationDTO getApplicationWithComments(Long id) {
+        ApplicationDTO applicationDTO = applicationRepository.findById(id)
+                .filter(Application::notDeleted)
+                .map(ApplicationDTO::new)
+                .orElseThrow(IllegalAccessError::new);
+
+        List<CommentDTO> comments = commentService.getAllCommentsOfApplication(id);
+        applicationDTO.setComments(comments);
+        return applicationDTO;
     }
 
     @Transactional
@@ -75,10 +94,14 @@ public class ApplicationService {
     }
 
     @Transactional
-    public void deleteById(Long id) {
-        ApplicationDTO applicationDTO = getApplicationDTOById(id);
-        if (userService.getCurrentUserId().equals(applicationDTO.getAuthorId())) {
-            applicationRepository.findById(id).ifPresent(application -> application.setStatus(Constants.DELETED));
+    public Map<String, String> deleteById(Long id) throws IllegalAccessException {
+        Application application = applicationRepository.findFirstByIdAndStatusNotLike(id, Constants.DELETED).orElseThrow(() -> new IllegalAccessException("Application not found"));
+        String owner = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new IllegalAccessException("You are not authorized"));
+        if (application.getAuthor().getUsername().equals(owner)) {
+            application.setStatus(Constants.DELETED);
+            return Collections.singletonMap("status", "deleted");
+        } else {
+            throw new IllegalAccessException("Only owner can delete application");
         }
     }
 }

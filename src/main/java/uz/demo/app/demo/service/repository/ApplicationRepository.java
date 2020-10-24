@@ -10,6 +10,8 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     Optional<Application> findFirstByIdAndAuthorId(Long id, Long authorId);
 
+    Optional<Application> findFirstByIdAndStatusNotLike(Long id, String exceptStatus);
+
     Optional<List<Application>> findAllByAuthorId(Long authorId);
 
 }

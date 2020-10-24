@@ -4,6 +4,7 @@ import uz.demo.app.demo.model.Application;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 public class ApplicationDTO {
     private Long id;
@@ -20,6 +21,8 @@ public class ApplicationDTO {
     private Long authorId;
 
     private String authorName;
+
+    private List<CommentDTO> comments;
 
     public ApplicationDTO() {
 
@@ -80,6 +83,14 @@ public class ApplicationDTO {
 
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDTO> comments) {
+        this.comments = comments;
     }
 
     @Override
