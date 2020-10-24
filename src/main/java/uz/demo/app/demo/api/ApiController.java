@@ -1,5 +1,6 @@
 package uz.demo.app.demo.api;
 
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import uz.demo.app.demo.service.dto.UserDTO;
 import java.util.List;
 
 @Controller
+@Secured({})
 @RequestMapping(path = "/api")
 public class ApiController {
 

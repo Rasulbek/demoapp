@@ -1,5 +1,6 @@
 package uz.demo.app.demo.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import uz.demo.app.demo.model.User;
 import java.util.Date;
 
@@ -9,6 +10,7 @@ public class UserDTO {
 
     private String username;
 
+    @JsonIgnore
     private String password;
 
     private String firstName;

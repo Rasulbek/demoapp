@@ -19,7 +19,7 @@ import uz.demo.app.demo.service.vm.LoginVM;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping(path = "/api")
 public class UserJWTController {
 
     private final TokenProvider tokenProvider;

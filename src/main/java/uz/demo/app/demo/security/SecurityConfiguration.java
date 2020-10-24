@@ -54,6 +54,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .exceptionHandling()
             .and()
+                .httpBasic().disable()
+                .csrf().disable()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
