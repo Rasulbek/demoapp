@@ -39,12 +39,30 @@ public class ApiController {
         return userService.getAllUsers();
     }
 
+    @GetMapping(path = "/users/{id}")
+    public ResponseEntity<?> getAllUsers(@PathVariable Long id) {
+        try {
+            return ResponseEntity.ok(userService.getById(id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", String.format("User by ID: %d not found", id)));
+        }
+    }
+
     @PostMapping("/users/register")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody(required = false) UserVM newUser) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody UserVM newUser) {
         try {
             Long userId = userService.registerAndGetToken(newUser);
             return ResponseEntity.ok(Collections.singletonMap("userId", userId));
         } catch (IllegalAccessException e) {
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
+        }
+    }
+
+    @PutMapping("/users/update")
+    public ResponseEntity<?> updateUser(@Valid @RequestBody UserVM userVM) {
+        try {
+            return ResponseEntity.ok(userService.update(userVM));
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
         }
     }

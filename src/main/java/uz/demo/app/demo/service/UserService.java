@@ -2,6 +2,7 @@ package uz.demo.app.demo.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.demo.app.demo.model.User;
 import uz.demo.app.demo.security.SecurityUtils;
 import uz.demo.app.demo.service.dto.UserDTO;
@@ -9,7 +10,9 @@ import uz.demo.app.demo.service.repository.UserRepository;
 import uz.demo.app.demo.service.vm.UserVM;
 
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -59,6 +62,26 @@ public class UserService {
             return user.getId();
         } else {
             throw new IllegalAccessException("Can't register a new user");
+        }
+    }
+
+    public UserDTO getById(Long id) throws Exception {
+        return userRepository.findById(id).map(UserDTO::new).orElseThrow(Exception::new);
+    }
+
+    @Transactional
+    public Map<String, String> update(UserVM userVM) throws IllegalArgumentException {
+        String currentUser = SecurityUtils.getCurrentUserLogin().orElseThrow(() -> new IllegalArgumentException("You are not authorized"));
+        User user = userRepository.findByUsername(userVM.getUsername()).orElseThrow(() -> new IllegalArgumentException("User: " + userVM.getUsername() + " not found"));
+        if (currentUser.equals(user.getUsername())) {
+            user.setPassword(passwordEncoder.encode(userVM.getPassword()));
+            user.setFirstName(userVM.getFirstName());
+            user.setLastName(userVM.getLastName());
+            user.setBirthday(userVM.getBirthday());
+            user.setAddress(userVM.getAddress());
+            return Collections.singletonMap("status", "updated");
+        } else {
+            throw new IllegalArgumentException("You can update only your profile");
         }
     }
 }
