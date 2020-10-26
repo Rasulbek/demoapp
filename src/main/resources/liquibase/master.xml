@@ -8,5 +8,8 @@
     <include file="classpath:liquibase/changelog/20201015211600_Application.xml" relativeToChangelogFile="false"/>
     <include file="classpath:liquibase/changelog/20201020214100_Application.xml" relativeToChangelogFile="false"/>
     <include file="classpath:liquibase/changelog/20201020215500_Comment.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:liquibase/changelog/20201024211500_Employee.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:liquibase/changelog/20201026193500_AcademicDegree.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:liquibase/changelog/20201026200000_WorkPlace.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog>
